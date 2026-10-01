@@ -2,7 +2,7 @@
 
 class Board
 {
-    //Author: 
+    //Author:
     // Constant variables
     const Size = 15;
     const Empty = 0;
@@ -26,22 +26,27 @@ class Board
         return $this->places;
     }
 
+    //Checks that x and y are both inside the 15 by 15 board
     public function isOnBoard($x, $y){
         return $x >= 0 && $x < self::Size && $y >= 0 && $y < self::Size;
     }
-    
+
+    //True if nobody has played at (x, y) yet
     public function isEmpty($x, $y){
         return $this ->places[$x][$y] === self::Empty;
     }
 
+    //Gets whatever stone is at (x, y)
     public function stoneAt($x, $y){
         return $this->places[$x][$y];
     }
 
+    //Puts a stone down at (x, y)
     public function place($x, $y, $stone){
         $this ->places[$x][$y] = $stone;
     }
 
+    //Goes through the whole board and returns every empty spot as [x, y]
     public function emptyPlaces(){
         $result = [];
         for ($x = 0; $x < self::Size; $x++){
@@ -54,31 +59,63 @@ class Board
         return $result;
     }
 
+    //Board is full when there are no empty spots left (used for draws)
     public function isFull(){
         return count($this->emptyPlaces())===0;
     }
 
+    //Checks if the stone at (x, y) made 5 in a row
+    //Returns the 5 places as [x1, y1, x2, y2, ...] or an empty array if no win
     public function winningRow($x, $y){
         $stone = $this->places[$x][$y];
-        $directions = [[1,0],[0,1],[1,1],[1,-1]];
 
-        foreach ($directions as $d){
-            $backward = array_reverse($this->collect($x, $y, -$d[0], -$d[1], $stone));
-            $forward = $this->collect($x, $y, $d[0], $d[1], $stone);
-            $line = array_merge($backward, [[$x, $y]], $forward);
+        //Directions to check: horizontal, vertical, diagonal, other diagonal
+        $dxs = [1, 0, 1, 1];
+        $dys = [0, 1, 1, -1];
 
-            if (count($line) >= 5){
-                $flat = [];
-                foreach (array_slice($line, 0, 5)as $p){
-                    $flat[] = $p[0];
-                    $flat[] = $p[1];
+        for ($i = 0; $i < 4; $i++){
+            $dx = $dxs[$i];
+            $dy = $dys[$i];
+
+            //Walk backwards until the line ends to find where it starts
+            $startX = $x;
+            $startY = $y;
+            while ($this->isOnBoard($startX - $dx, $startY - $dy)
+                    && $this->places[$startX - $dx][$startY - $dy] === $stone){
+                $startX = $startX - $dx;
+                $startY = $startY - $dy;
+            }
+
+            //Now count forward from the start to get the full length
+            $length = 0;
+            $cx = $startX;
+            $cy = $startY;
+            while ($this->isOnBoard($cx, $cy) && $this->places[$cx][$cy] === $stone){
+                $length++;
+                $cx = $cx + $dx;
+                $cy = $cy + $dy;
+            }
+
+            //Found a win, so save the first 5 places of the line
+            if ($length >= 5){
+                $row = [];
+                $cx = $startX;
+                $cy = $startY;
+                for ($k = 0; $k < 5; $k++){
+                    $row[2 * $k] = $cx;
+                    $row[2 * $k + 1] = $cy;
+                    $cx = $cx + $dx;
+                    $cy = $cy + $dy;
                 }
-                return $flat;
+                return $row;
             }
         }
+        //No direction had 5 in a row
         return [];
     }
 
+    //Starts next to (x, y) and keeps stepping by (dx, dy) while the stones match
+    //Returns the matching places, doesn't include (x, y) itself
      public function collect($x, $y, $dx, $dy, $stone)
     {
         $cells = [];
