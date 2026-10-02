@@ -1,6 +1,7 @@
 <?php
-// Omok web service - GET /play?pid=p&x=x&y=y
-// Author: Your Name
+// pass parameters through url
+// Author: Jose Cruz
+// 09-26-2026
 
 require_once __DIR__ . '/../lib/common.php';
 

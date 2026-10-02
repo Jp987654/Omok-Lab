@@ -2,7 +2,9 @@
 
 class Board
 {
-    //Author:
+    //Author: Jose Cruz
+    // 09-26-2026
+
     // Constant variables
     const Size = 15;
     const Empty = 0;
@@ -18,9 +20,9 @@ class Board
             $column = array_fill(0, self::Size, self::Empty);
             $places = array_fill(0,self::Size, $column);
         }
-        //Restores a board
         $this -> places = $places;
     }
+
     //gets array to save as JSON
     public function getPlaces(){
         return $this->places;
@@ -31,22 +33,22 @@ class Board
         return $x >= 0 && $x < self::Size && $y >= 0 && $y < self::Size;
     }
 
-    //True if nobody has played at (x, y) yet
+    //True if nobody has played at x,y
     public function isEmpty($x, $y){
         return $this ->places[$x][$y] === self::Empty;
     }
 
-    //Gets whatever stone is at (x, y)
+    //Gets whatever stone is at x,y
     public function stoneAt($x, $y){
         return $this->places[$x][$y];
     }
 
-    //Puts a stone down at (x, y)
+    //Puts a stone down at x,y
     public function place($x, $y, $stone){
         $this ->places[$x][$y] = $stone;
     }
 
-    //Goes through the whole board and returns every empty spot as [x, y]
+    //Goes through the whole board and returns every empty spot as result array
     public function emptyPlaces(){
         $result = [];
         for ($x = 0; $x < self::Size; $x++){
@@ -59,12 +61,12 @@ class Board
         return $result;
     }
 
-    //Board is full when there are no empty spots left (used for draws)
+    //Board is full when there are no empty spots left, method to decide draw
     public function isFull(){
         return count($this->emptyPlaces())===0;
     }
 
-    //Checks if the stone at (x, y) made 5 in a row
+    //Checks if the stone at x,y made 5 in a row
     //Returns the 5 places as [x1, y1, x2, y2, ...] or an empty array if no win
     public function winningRow($x, $y){
         $stone = $this->places[$x][$y];
@@ -80,8 +82,7 @@ class Board
             //Walk backwards until the line ends to find where it starts
             $startX = $x;
             $startY = $y;
-            while ($this->isOnBoard($startX - $dx, $startY - $dy)
-                    && $this->places[$startX - $dx][$startY - $dy] === $stone){
+            while ($this->isOnBoard($startX - $dx, $startY - $dy) && $this->places[$startX - $dx][$startY - $dy] === $stone){
                 $startX = $startX - $dx;
                 $startY = $startY - $dy;
             }

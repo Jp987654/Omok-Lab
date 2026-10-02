@@ -1,6 +1,6 @@
 <?php
-// Omok web service - a game in progress, persisted as a JSON file
-// Author: Jose Cruz
+// Game in prograss
+// Author: Jose Cruz 09-26-2026
 
 class Game
 {

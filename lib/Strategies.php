@@ -1,6 +1,6 @@
 <?php
-// Omok web service - registry of available strategies
-// Author: Your Name
+// hanldes all the strategies, can support more strategies
+// Author: Ian Bautista 09-28-2026
 
 class Strategies
 {

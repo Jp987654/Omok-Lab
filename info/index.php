@@ -1,6 +1,7 @@
 <?php
-// Omok web service - GET /info
-// Author: Your Name
+// Get info
+// Author: Jose Cruz
+// 09-26-2026
 
 require_once __DIR__ . '/../lib/common.php';
 

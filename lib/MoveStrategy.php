@@ -1,6 +1,7 @@
 <?php
-// Omok web service - interface for computer move strategies
-// Author: Your Name
+// Internface for move strategies, just calls strat
+// Author: Jose Cruz 09-26-2026
+
 
 interface MoveStrategy
 {

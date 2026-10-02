@@ -1,6 +1,6 @@
 <?php
-// Omok web service - shared setup and JSON response helpers
-// Author: Your Name
+// Resnonse json handler
+// Author: Ian Bautista 09-28-2026
 
 require_once __DIR__ . '/Board.php';
 require_once __DIR__ . '/MoveStrategy.php';
@@ -9,7 +9,7 @@ require_once __DIR__ . '/SmartStrategy.php';
 require_once __DIR__ . '/Strategies.php';
 require_once __DIR__ . '/Game.php';
 
-// Sends data as JSON and stops the script.
+// send data as JSON and end
 function respond($data)
 {
     header('Content-Type: application/json');
@@ -17,7 +17,7 @@ function respond($data)
     exit;
 }
 
-// Sends an error response and stops the script.
+// sends error and reason, error handling
 function fail($reason)
 {
     respond(['response' => false, 'reason' => $reason]);
